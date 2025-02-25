@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Emotion Wheel Example</title>
+  <style>
+    /* Center the wheel on the page */
+    .wheel-container {
+      width: 500px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* Default style for each segment */
+    .wheel-segment {
+      cursor: pointer;
+      transition: fill 0.2s;
+    }
+
+    /* Highlight style for selected segments */
+    .wheel-segment.selected {
+      stroke: #000;        /* Outline the selected segment in black */
+      stroke-width: 2px;
+      fill-opacity: 0.7;   /* Slightly darker or lighter look */
+    }
+
+    /* A simple button style (optional) */
+    #downloadBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="wheel-container" id="wheel-container">
+    <!-- 
+      Replace the below SVG with your 118-segment emotion wheel.
+      Each segment should be a <path>, <polygon>, or <circle> that covers the correct wedge.
+      Give each segment the class "wheel-segment" so we can toggle it in JS.
+    -->
+    <svg 
+      id="emotion-wheel" 
+      width="500" 
+      height="500" 
+      viewBox="0 0 500 500"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <!-- Example placeholders: 
+           Replace with your actual paths/polygons for each segment. 
+           Each segment has an ID and the class "wheel-segment" 
+      -->
+      <path 
+        id="segment1" 
+        class="wheel-segment" 
+        d="M250,250 L250,0 A250,250 0 0,1 500,250 z" 
+        fill="#FFB3B3" 
+      />
+      <path 
+        id="segment2" 
+        class="wheel-segment" 
+        d="M250,250 L500,250 A250,250 0 0,1 250,500 z" 
+        fill="#B3FFB3" 
+      />
+      <path 
+        id="segment3" 
+        class="wheel-segment" 
+        d="M250,250 L250,500 A250,250 0 0,1 0,250 z" 
+        fill="#B3B3FF" 
+      />
+      <path 
+        id="segment4" 
+        class="wheel-segment" 
+        d="M250,250 L0,250 A250,250 0 0,1 250,0 z" 
+        fill="#FFFFB3" 
+      />
+      <!-- You would continue adding all 118 segments here... -->
+    </svg>
+  </div>
+
+  <button id="downloadBtn">Download Wheel as Image</button>
+
+  <!-- Include html2canvas (CDN link) for converting the SVG/HTML to a PNG image -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+  <script>
+    // 1) Toggle 'selected' class on click
+    const wheel = document.getElementById('emotion-wheel');
+    wheel.addEventListener('click', (event) => {
+      if (event.target.classList.contains('wheel-segment')) {
+        event.target.classList.toggle('selected');
+      }
+    });
+
+    // 2) “Save as image” button
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+      const wheelContainer = document.getElementById('wheel-container');
+      
+      // Use html2canvas to capture the #wheel-container div
+      html2canvas(wheelContainer).then((canvas) => {
+        // Convert the canvas to a data URL and download
+        const link = document.createElement('a');
+        link.download = 'emotion-wheel.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    });
+  </script>
+</body>
+</html>
